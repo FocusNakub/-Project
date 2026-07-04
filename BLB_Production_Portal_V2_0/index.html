@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>บ่วง ลวง บาป | Production Portal v2.0</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="bg"></div><div class="fog"></div><div class="scan"></div><div id="cursorGlow"></div>
+
+  <main class="page">
+    <section class="hero" id="hero">
+      <div class="hero-copy">
+        <p class="kicker">Official Production Portal • V2.0 Online Sync</p>
+        <h1>บ่วง<br>ลวง<br>บาป</h1>
+        <p class="logline" id="siteLogline">จุดรวมงานกลางของโปรเจกต์หนังผี ตั้งแต่บท ทีมงาน แผนถ่าย ภาพกอง และประกาศทีมงาน</p>
+        <div class="hero-actions">
+          <button class="primary" data-open-control>⚙ Control Center</button>
+          <button class="ghost" data-scroll="gallery">ดู Gallery</button>
+        </div>
+        <div class="meta">
+          <span>Crew <b id="crewCount">0</b> คน</span>
+          <span>Online Sync</span>
+          <span id="syncStatus">กำลังเชื่อมต่อ...</span>
+        </div>
+      </div>
+      <div class="poster" id="heroPoster">
+        <div class="posterShade">
+          <div class="posterLabel">Production Portal</div>
+          <strong>บ่วง ลวง บาป</strong>
+          <small>Horror Short Film</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="announcement" class="card announce-card hidden">
+      <div><span class="chip">ประกาศล่าสุด</span><h2 id="announceTitle"></h2><p id="announceText"></p></div>
+      <button class="ghost small" id="dismissAnnounce">ปิด</button>
+    </section>
+
+    <section id="story" class="card">
+      <div class="section-head"><span class="chip">Story</span><h2>Story & Scene Highlights</h2></div>
+      <div class="grid" id="storyGrid"></div>
+    </section>
+
+    <section id="schedule" class="card">
+      <div class="section-head"><span class="chip gold">Schedule</span><h2>Production Schedule</h2></div>
+      <div class="timeline" id="scheduleList"></div>
+    </section>
+
+    <section id="crew" class="card">
+      <div class="section-head"><span class="chip">Crew</span><h2>Crew Directory</h2></div>
+      <div class="crew-grid" id="crewGrid"></div>
+    </section>
+
+    <section id="gallery" class="card">
+      <div class="section-head"><span class="chip gold">Gallery</span><h2>Behind The Scene / In Set</h2></div>
+      <div class="tabs"><button class="tab active" data-filter="all">ทั้งหมด</button><button class="tab" data-filter="Behind The Scene">Behind The Scene</button><button class="tab" data-filter="In Set">In Set</button></div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+  </main>
+
+  <button class="quick-access" data-open-control title="Control Center">⚙</button>
+
+  <dialog id="controlDialog" class="control">
+    <div class="control-head"><div><span class="chip">Control Center</span><h2>จัดการ Production Portal</h2><p id="roleLabel">ยังไม่ได้เข้าสู่ระบบ</p></div><button class="icon" data-close-control>×</button></div>
+    <div id="loginBox" class="login-box">
+      <p class="muted">เลือกสิทธิ์แล้วใส่รหัส</p>
+      <div class="role-select"><button class="role-btn active" data-role="admin">Admin</button><button class="role-btn" data-role="editor">Editor</button></div>
+      <input id="passwordInput" type="password" placeholder="Password" />
+      <button class="primary full" id="loginBtn">Login</button>
+      <p class="hint">Admin: admin123 • Editor: editor123</p>
+    </div>
+
+    <div id="panelBox" class="panel hidden">
+      <div class="panel-tabs">
+        <button data-panel="announcePanel" class="active">ประกาศ</button>
+        <button data-panel="heroPanel">Hero</button>
+        <button data-panel="galleryPanel">Gallery</button>
+        <button data-panel="crewPanel">Crew</button>
+        <button data-panel="storyPanel">Story</button>
+        <button data-panel="schedulePanel">Schedule</button>
+        <button data-panel="settingsPanel">Settings</button>
+      </div>
+      <section id="announcePanel" class="admin-panel active">
+        <h3>ประกาศ Popup</h3>
+        <input id="annTitleInput" placeholder="หัวข้อประกาศ" />
+        <textarea id="annTextInput" placeholder="รายละเอียดประกาศ"></textarea>
+        <button class="primary" id="saveAnnouncement">บันทึกประกาศ</button>
+      </section>
+      <section id="heroPanel" class="admin-panel">
+        <h3>Hero Cover</h3>
+        <input type="file" id="heroFile" accept="image/*" />
+        <button class="primary" id="uploadHero">อัปโหลด Hero</button>
+      </section>
+      <section id="galleryPanel" class="admin-panel">
+        <h3>เพิ่มรูป Gallery</h3>
+        <select id="galleryType"><option>Behind The Scene</option><option>In Set</option></select>
+        <input id="galleryCaption" placeholder="คำอธิบายรูป" />
+        <input type="file" id="galleryFile" accept="image/*" />
+        <button class="primary" id="uploadGallery">อัปโหลดรูป</button>
+      </section>
+      <section id="crewPanel" class="admin-panel">
+        <h3>Crew</h3>
+        <textarea id="crewJson" class="codearea"></textarea>
+        <button class="primary" id="saveCrew">บันทึก Crew</button>
+      </section>
+      <section id="storyPanel" class="admin-panel">
+        <h3>Story</h3>
+        <textarea id="storyJson" class="codearea"></textarea>
+        <button class="primary" id="saveStory">บันทึก Story</button>
+      </section>
+      <section id="schedulePanel" class="admin-panel">
+        <h3>Schedule</h3>
+        <textarea id="scheduleJson" class="codearea"></textarea>
+        <button class="primary" id="saveSchedule">บันทึก Schedule</button>
+      </section>
+      <section id="settingsPanel" class="admin-panel">
+        <h3>Website Settings</h3>
+        <input id="loglineInput" placeholder="Logline" />
+        <button class="primary" id="saveSettings">บันทึก Settings</button>
+        <hr><button class="danger" id="logoutBtn">Logout</button>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog id="lightbox" class="lightbox"><button class="icon close-lightbox">×</button><button class="navbtn prev">‹</button><img id="lightboxImg" alt=""><button class="navbtn next">›</button><p id="lightboxCaption"></p></dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
