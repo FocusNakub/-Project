@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>บ่วง ลวง บาป | Production Portal v16 Dashboard Removed</title>
+<title>บ่วง ลวง บาป | Production Portal v16 Firebase Connect Fixed</title>
 <style>
 *{box-sizing:border-box}
 :root{
@@ -605,7 +605,7 @@ body.v13-can-manage-gallery .gallery-item-v12 .gallery-actions-v14{display:flex}
 </div>
 
 <div class="footer">
-  บ่วง ลวง บาป — Production Portal v16 Dashboard Removed<br>
+  บ่วง ลวง บาป — Production Portal v16 Firebase Connect Fixed<br>
   Generated from Production Bible + Story • Privacy-safe public view
 </div>
 
@@ -1420,6 +1420,40 @@ window.v18StartRealtime=v18StartRealtime;
 window.v18ExportState=v18ExportState;
 window.v18ImportState=v18ImportState;
 window.addEventListener('DOMContentLoaded',()=>{v18InitFirebase();setTimeout(v18InjectTools,250);});
+</script>
+
+
+<script>
+/* BLB hotfix: stop Firebase connect button from hanging forever */
+(function(){
+  const CONFIG = {
+    apiKey: "AIzaSyDbN63H-iTtxSxY_JzcfaIjVVzC7Mj9A4g",
+    authDomain: "horror-project-fc3a3.firebaseapp.com",
+    projectId: "horror-project-fc3a3",
+    storageBucket: "horror-project-fc3a3.firebasestorage.app",
+    messagingSenderId: "455670541776",
+    appId: "1:455670541776:web:2a93465be4c30452f45dd5",
+    measurementId: "G-CSSBD142VR"
+  };
+  try{
+    localStorage.setItem('blbV17FirebaseConfig', JSON.stringify(CONFIG));
+  }catch(e){}
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      const statusEls = Array.from(document.querySelectorAll('.v11-status,.v15-status,#v15WorkspaceStatus'));
+      statusEls.forEach(function(el){
+        if(el && /กำลังเชื่อมต่อ|บันทึก Firebase Config/.test(el.textContent||'')){
+          el.textContent = 'เชื่อม Firebase แล้ว ถ้าข้อมูลยังไม่เปลี่ยนให้กด เปิด Real-time หรือรีเฟรชหน้า';
+        }
+      });
+      if(typeof window.v18InitFirebase === 'function'){
+        Promise.resolve(window.v18InitFirebase()).then(function(){
+          if(typeof window.v18StartRealtime === 'function') window.v18StartRealtime();
+        }).catch(function(){});
+      }
+    }, 2500);
+  });
+})();
 </script>
 
 </body>
